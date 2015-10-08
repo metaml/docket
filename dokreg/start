@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin; export PATH
+
+/opt/dokreg/dokreg
+
+sleep infinity

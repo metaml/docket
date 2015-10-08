@@ -1,0 +1,46 @@
+# docker:hostname maps to consul:hostname
+server:
+  hostname: consul-server
+  environment: [BOOTSTRAP_EXPECT=1, CONSUL_MODE=server, SERVICE=consul, DATA_CENTER=dev]
+  ports:
+    - "53:53/tcp"
+    - "53:53/udp"
+    - "8500:8500/tcp"
+  expose:
+    - "53/tcp"
+    - "53/udp"
+    - "8300/tcp"
+    - "8301/tcp"
+    - "8301/udp"
+    - "8302/tcp"
+    - "8302/udp"
+    - "8400/tcp"
+    - "8500/tcp"
+  image: consul
+
+client:
+  hostname: consul-client
+  environment: [CONSUL_MODE=client, CONSUL_SERVER=consul-server, SERVICE=consul, DATA_CENTER=dev]
+  links:
+    - server:consul-server
+  expose:
+    - "53/tcp"
+    - "53/udp"
+    - "8300/tcp"
+    - "8301/tcp"
+    - "8301/udp"
+    - "8302/tcp"
+    - "8302/udp"
+    - "8400/tcp"
+    - "8500/tcp"
+  image: consul
+
+dokreg:
+  hostname: dokreg
+  environment: [CONSUL_CLIENT=consul-client, SERVICE=consul-dokreg, DATA_CENTER=dev]
+  user: root
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  links:
+    - client:consul-client
+  image: dokreg
