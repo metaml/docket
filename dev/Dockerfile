@@ -89,6 +89,7 @@ RUN cd /src/nupic && python setup.py install --prefix=/usr/local --exec-prefix=/
 
 env QHOME=/opt/q
 ADD q /opt/q
+RUN pip install --allow-external pyq pyq
 
 WORKDIR /data
 USER root

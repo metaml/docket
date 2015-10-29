@@ -1,26 +1,24 @@
-FROM ubuntu:14.10
+FROM ubuntu:15.04
 MAINTAINER ml (metaml@gmail.com)
 
-RUN locale-gen en_US en_US.UTF-8 && dpkg-reconfigure locales && update-locale LC_ALL="en_US.UTF-8"
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -y && apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --quiet wget curl ruby software-properties-common
+RUN apt-get install -y make
 
-RUN add-apt-repository -y ppa:webupd8team/java
-RUN apt-get update -y 
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java8-installer
+USER root
+WORKDIR /var/tmp
 
-WORKDIR /opt
-ADD https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz /opt/
-RUN tar xf elasticsearch-1.7.2.tar.gz && rm -f elasticsearch-1.7.2.tar.gz
-RUN mv -f elasticsearch-1.7.2 es
+ADD base.mk base.mk
+RUN make -f base.mk
 
-RUN mv -f /opt/es/config/elasticsearch.yml /opt/es/config/elasticsearch.yml-
-ADD elasticsearch.yml /opt/es/config/elasticsearch.yml
+ADD java.mk java.mk
+RUN make -f java.mk
 
-ADD start /opt/es/start
-RUN chmod a+x /opt/es/start
+ADD elasticsearch.mk elasticsearch.mk
+RUN make -f elasticsearch.mk
 
-VOLUME ["/data"]
-WORKDIR /data
-ENTRYPOINT ["/opt/es/start"]
+ADD elasticsearch.yml /opt/elasticsearch/config/elasticsearch.yml
+
+ADD start /opt/elasticsearch/bin/start
+
+WORKDIR /opt/elasticsearch
+USER daemon
+ENTRYPOINT ["/opt/elasticsearch/bin/start"]

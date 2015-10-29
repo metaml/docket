@@ -1,3 +1,5 @@
+.PHONY: start stop ls clean docker-start docker-stop cid
+
 CIDS := $(shell docker ps --quiet --all --filter 'image=${DOCKER_IMAGE}' | awk '{print $$1}')
 
 start:
