@@ -1,4 +1,4 @@
-FROM ubuntu:15.04
+FROM ubuntu:15.10
 MAINTAINER ml (metaml@gmail.com)
 
 ENV DEBIAN_FRONTEND noninteractive  
@@ -6,9 +6,9 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y --quiet unzip curl wget vim
 
 RUN mkdir -p /opt/consul/bin /opt/consul/etc && chown -R daemon /opt/consul
-ADD https://dl.bintray.com/mitchellh/consul/0.5.2_linux_amd64.zip /tmp/consul.zip
+ADD https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip /tmp/consul.zip
 RUN unzip /tmp/consul.zip -d /opt/consul/bin/ && chmod +x /opt/consul/bin/*
-ADD https://dl.bintray.com/mitchellh/consul/0.5.2_web_ui.zip /tmp/webui.zip
+ADD https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_web_ui.zip  /tmp/webui.zip
 RUN unzip /tmp/webui.zip -d /opt/consul && mv -f /opt/consul/dist /opt/consul/webui
 RUN rm -f /tmp/*.zip
 

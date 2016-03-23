@@ -1,29 +1,25 @@
 .PHONY: ghc ppa pkg update stack
 
+#######
+# sudo apt-get install -y software-properties-common
+# sudo apt-get update
+# sudo apt-get install -y cabal-install-1.22 ghc-7.10.3
+#######
+
 SHELL := /bin/bash
+CODE_NAME := $(shell lsb_release --codename | awk '{print $$NF}')
 
-default: ppa update pkg ghc symlink stack
+default: ppa pkg ghc
 
-ghc:; sudo apt install --force-yes -y ghc-7.10.2 cabal-install-1.22 alex-3.1.4 happy-1.19.5
-
-stack:
-	echo 'deb http://download.fpcomplete.com/ubuntu/vivid stable main' | sudo tee /etc/apt/sources.list.d/fpco.list 
-	apt update -y && apt install -y stack
-
-symlink:
-	sudo ln -s /opt/ghc/7.10.2/bin/* /usr/local/bin/
-	sudo ln -s /opt/cabal/1.22/bin/cabal /usr/local/bin/
-	sudo ln -s /opt/alex/3.1.4/bin/alex /usr/local/bin/
-	sudo ln -s /opt/happy/1.19.5/bin/happy /usr/local/bin/
+ghc:; sudo apt-get install -y cabal-install-1.22 ghc-7.10.3 alex happy
 
 pkg:; sudo apt install -y $(PKGS)
 
-update:; sudo apt update -y && sudo apt upgrade -y
-
 ppa:
-	sudo add-apt-repository ppa:hvr/ghc
+	sudo add-apt-repository -y ppa:hvr/ghc
 	wget -q -O- https://s3.amazonaws.com/download.fpcomplete.com/ubuntu/fpco.key | sudo apt-key add -
-	echo 'deb http://download.fpcomplete.com/ubuntu/vivid stable main' | sudo tee /etc/apt/sources.list.d/fpco.list
+	echo 'deb http://download.fpcomplete.com/ubuntu/${CODE_NAME} stable main' | sudo tee /etc/apt/sources.list.d/fpco.list
+	sudo apt-get update -y
 
 PKGS = libgmp-dev libncurses5-dev gcc g++ python-pygments wget zlib1g-dev
 PKGS += $(LIBS)
@@ -45,4 +41,3 @@ LIBS += libmpfr-dev
 LIBS += libmpc-dev
 LIBS += libisl-dev
 LIBS += libcloog-isl-dev
-
