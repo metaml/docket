@@ -1,28 +1,26 @@
-.PHONY: start stop ls clean docker-start docker-stop cid
+.PHONY: default docker docker-compose update ppa
 
-CIDS := $(shell docker ps --quiet --all --filter 'image=${DOCKER_IMAGE}' | awk '{print $$1}')
+.DEFAULT_GOAL: preamble ppa update docker docker-compose
 
-start:
-	if [ -z "${DEBUG}" ]; then \
-                docker run --detach ${DOCKER_IMAGE}; \
-        else \
-                docker run -it --user=root --entrypoint=/bin/bash ${DOCKER_IMAGE}; \
-        fi
+docker:; sudo apt-get install -y docker-engine
 
-stop:; for i in $(CIDS); do docker stop $$i; done
+docker-compose:; sudo apt-get install -y docker-compose
 
-ls:; docker ps --all
+update:; apt-get update -y && apt-get upgrade -y
 
-clean:; for i in $(CIDS); do docker rm $$i; done
+ppa:; add-apt-repository -y ppa:webupd8team/java
 
-docker-start:
-	sudo systemctl unmask docker.socket
-	sudo systemctl start docker.socket
-	sudo systemctl unmask docker.service
-	sudo systemctl start docker.service
+CODENAME := $(shell lsb_release --codename | awk '{print $$NF}')
+preamble:
+	sudo apt-get update -y
+	sudo apt-get install -y apt-transport-https ca-certificates
+	sudo apt-key adv \
+		--keyserver hkp://p80.pool.sks-keyservers.net:80 \
+		--recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+	# @todo: may want to ask for yay/nay before proceeding
+	echo deb https://apt.dockerproject.org/repo ubuntu-${CODENAME} main \
+	| sudo tee /etc/apt/sources.list.d/docker.list
+	sudo apt-get update -y
+	sudo apt-get install -y linux-image-extra-$$(uname -r)
 
-docker-stop:
-	sudo systemctl stop docker.socket
-	sudo systemctl stop docker.service
-
-cid:; echo $(CIDS)
+codename:; echo ${CODENAME}

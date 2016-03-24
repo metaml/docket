@@ -41,5 +41,6 @@ daemon-stop:; for i in docker.service docker.socket; do sudo systemctl stop $$i;
 daemon-restart: daemon-stop daemon-start
 
 .PHONY: db es \
-	docker-ps docker-ls docker-stop docker-clean docker-clobber docker-sh \
+	docker-ps docker-ls docker-stop docker-clean \
+	docker-clobber docker-sh \
 	daemon-start daemon-stop daemon-restart
