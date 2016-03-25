@@ -29,4 +29,8 @@ epilogue:
 	@echo "  to /etc/default/grub"
 
 docker-group:
-	[ -z "$$LOGNAME" ] || usermod -aG docker $$LOGNAME
+	@if [ -n "$$USERNAME" ]; then \
+		usermod -aG docker $$USERNAME; \
+	else \
+		@echo "USERNAME is empty"; \
+	fi
