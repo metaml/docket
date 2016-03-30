@@ -27,4 +27,8 @@ list-topic:; docker exec --tty=true ${DOCKERID} bin/kafka-topics.sh --list \
 
 info:; for i in kafka_kafka_1 kafka_zookeeper_1; do docker exec --tty=true $$i ip addr show; done
 
+clobber: clean docker-clean
+
 clean:; rm -f ${MAKEFILES}
+
+docker-clean:; docker rm $$(docker ps -a -q)
