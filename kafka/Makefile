@@ -8,5 +8,6 @@ makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
 
 cluster:
 	( docker-compose up 2>&1 >> /var/tmp/$@.log ) &
+	sleep 5
 	( docker-compose scale dev-scala=2 2>&1 >> /var/tmp/$@.log ) &
 	tail -f /var/tmp/$@.log

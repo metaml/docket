@@ -4,13 +4,21 @@ services:
     build: .
     image: kafka
     ports:
-      - "2181:2181"
       - "9092:9092"
     depends_on:
       - zookeeper
   zookeeper:
     build: ../zookeeper
     image: zookeeper
+    ports:
+      - "2181:2181"
+  cassandra:
+    build: ../cassandra
+    image: cassandra
+    ports:
+      - "9160:9160"
+      - "9042:9042"
+      - "7199:7199"
   dev-scala:
     build: ../dev-scala
     image: dev-scala
