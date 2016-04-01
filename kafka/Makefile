@@ -3,7 +3,10 @@
 docker: makefiles
 	docker build -t kafka .
 
-cluster:; docker-compose up
+cluster:
+	( docker-compose up 2>&1 >> /var/tmp/$@.log ) &
+	( docker-compose scale dev-scala=2 2>&1 >> /var/tmp/$@.log ) &
+	tail -f /var/tmp/$@.log
 
 MAKEFILES = base.mk java.mk kafka.mk
 makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
@@ -32,3 +35,5 @@ clobber: clean docker-clean
 clean:; rm -f ${MAKEFILES}
 
 docker-clean:; docker rm $$(docker ps -a -q)
+
+docker-stop:; docker stop $$(docker ps -q)

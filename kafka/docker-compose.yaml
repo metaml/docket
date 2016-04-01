@@ -11,3 +11,12 @@ services:
   zookeeper:
     build: ../zookeeper
     image: zookeeper
+  dev-scala:
+    build: ../dev-scala
+    image: dev-scala
+    volumes:
+      - /home:/home
+      - /etc/passwd:/etc/passwd
+      - /etc/shadow:/etc/shadow
+      - /etc/group:/etc/group
+      - /etc/sudoers:/etc/sudoer
