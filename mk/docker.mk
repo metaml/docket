@@ -9,7 +9,7 @@ docker-engine:; apt-get install -y docker-engine
 docker-compose:
 	[ -f /usr/local/bin/docker-compose ] \
 	  || curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` \
-	  > /usr/local/bin/docker-compose
+	  	> /usr/local/bin/docker-compose
 	chmod a+x /usr/local/bin/docker-compose
 
 update:; apt-get update -y && apt-get upgrade -y
