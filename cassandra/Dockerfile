@@ -22,3 +22,4 @@ ADD start /opt/cassandra/start
 WORKDIR /opt/cassandra
 USER daemon
 ENTRYPOINT ["/opt/cassandra/start"]
+EXPOSE 7199 9042 9160
