@@ -11,6 +11,7 @@ RUN make -f base.mk
 
 ADD influxdb.mk influxdb.mk
 RUN make -f influxdb.mk
+RUN chown -R daemon:daemon /opt/influxdb
 
 ADD influxdb.conf /opt/influxdb/usr/etc/influxdb.conf
 ADD start /opt/influxdb/start

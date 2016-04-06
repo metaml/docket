@@ -1,4 +1,3 @@
 #!/bin/sh
-
 cd /opt/influxdb
-./usr/bin/influxdb -config ./usr/etc/influxdb.conf
+./usr/bin/influxd -config ./usr/etc/influxdb.conf
