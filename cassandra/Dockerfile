@@ -12,6 +12,9 @@ RUN make -f base.mk
 ADD java.mk java.mk
 RUN make -f java.mk
 
+ADD python.mk python.mk
+RUN make -f python.mk
+
 ADD cassandra.mk cassandra.mk
 RUN make -f cassandra.mk
 
