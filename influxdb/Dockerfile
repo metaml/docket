@@ -9,12 +9,13 @@ WORKDIR /var/tmp
 ADD base.mk base.mk
 RUN make -f base.mk
 
-ADD influxdb.mk influxdb.mk
-RUN make -f influxdb.mk
-RUN chown -R daemon:daemon /opt/influxdb
-
 ADD influxdb.conf /opt/influxdb/usr/etc/influxdb.conf
 ADD start /opt/influxdb/start
+
+ADD influxdb.mk influxdb.mk
+RUN make -f influxdb.mk
+RUN chown -R daemon:daemon /opt/influxdb /usr/sbin
+RUN apt-get install -y rlwrap
 
 WORKDIR /opt/influxdb
 USER daemon
