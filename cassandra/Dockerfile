@@ -1,7 +1,7 @@
 FROM ubuntu:15.10
 MAINTAINER ml (metaml@gmail.com)
 
-RUN apt-get install -y make
+RUN apt-get update -y && apt-get install -y make
 
 USER root
 WORKDIR /var/tmp
