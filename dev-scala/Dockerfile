@@ -11,28 +11,21 @@ WORKDIR /opt
 RUN mkdir -p mk
 
 ADD base.mk /opt/mk/base.mk
-RUN make -f mk/base.mk
-
 ADD java.mk /opt/mk/java.mk
-RUN make -f mk/java.mk
-
 ADD jq.mk /opt/mk/jq.mk
-RUN make -f mk/jq.mk
-
 ADD kafka.mk /opt/mk/kafka.mk
-RUN make -f mk/kafka.mk
-
 ADD maven.mk /opt/mk/maven.mk
-RUN make -f mk/maven.mk
-
 ADD pkgs.mk /opt/mk/pkgs.mk
-RUN make -f mk/pkgs.mk
-
+ADD sbt.mk /opt/mk/sbt.mk
+ADD scala.mk /opt/mk/scala.mk
 ADD wget.mk /opt/mk/wget.mk
-RUN make -f mk/wget.mk
-
+ADD zinc.mk /opt/mk/zinc.mk
 ADD zookeeper.mk /opt/mk/zookeeper.mk
-RUN make -f mk/zookeeper.mk
+
+RUN for i in base.mk java.mk jq.mk kafka.mk maven.mk pkgs.mk sbt.mk scala.mk wget.mk zinc.mk zookeeper.mk; do \
+        echo $i; \
+        make -f /opt/mk/$i; \
+    done
 
 WORKDIR /
 USER root
