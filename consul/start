@@ -1,13 +1,14 @@
-#!/bin/sh
+#!/bin/sh -x
 
-PATH=/opt/consul/bin:$PATH; export PATH
-GOMAXPROCS=4 && export GOMAXPROCS
+PATH=/opt/consul:$PATH; export PATH
+GOMAXPROCS=8 && export GOMAXPROCS
 DATA_CENTER=${DATA_CENTER-local}
 
-if [ "server" = "$CONSUL_MODE" ]; then
-    BOOTSTRAP_EXPECT=${BOOTSTRAP_EXPECT-1}
-    consul agent -config-dir /opt/consul/etc -server -bootstrap-expect=$BOOTSTRAP_EXPECT -ui-dir=/opt/consul/webui -dc=$DATA_CENTER -log-level=info
-else
-    consul agent -config-dir /opt/consul/etc -dc $DATA_CENTER -join $CONSUL_SERVER
-fi
+ls -l
 
+if [ "server" = "$CONSUL_MODE" ]; then
+    BOOTSTRAP_EXPECT=${BOOTSTRAMP_EXPECT-1}
+    consul agent -config-dir /opt/consul -server -bootstrap-expect=$BOOTSTRAP_EXPECT
+else
+    consul agent -config-dir /opt/consul -dc $DATA_CENTER -join $CONSUL_SERVER
+fi

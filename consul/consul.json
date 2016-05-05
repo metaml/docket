@@ -1,11 +1,10 @@
 {
-    "client_addr": "0.0.0.0",
     "data_dir": "/data",
-    "ui_dir": "/opt/consul/webui",
+    "ui_dir": "/opt/webui",
     "log_level": "info",
     "datacenter": "local",
     "domain": "dev",
-    "ports": {"dns": 53},
+    "ports": {"dns": 5300},
     "recursor": "8.8.8.8",
     "disable_update_check": true
 }

@@ -1,5 +1,9 @@
-up: docker compose
+.PHONY: docker makefiles clean
 
-docker:; docker build -t consul .
+consul: makefiles
+	docker build -t $@ .
 
-compose:; docker-compose up
+MAKEFILES = base.mk consul.mk webui.mk
+makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
+
+clean:; rm -f ${MAKEFILES}

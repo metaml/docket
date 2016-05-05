@@ -1,7 +1,7 @@
 SHELL = /bin/bash
 DEBIAN_FRONTEND = noninteractive
 
-PKGS = software-properties-common make patch apt-utils sudo wget curl
+PKGS = software-properties-common make patch apt-utils sudo wget curl unzip
 
 default:
 	locale-gen en_US en_US.UTF-8
