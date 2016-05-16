@@ -5,7 +5,7 @@ PATH := /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 DEBIAN_FRONTEND := noninteractive
 
-CASS_VER = 3.4
+CASS_VER = 3.5
 CASS_URL = http://apache.claz.org/cassandra/${CASS_VER}/apache-cassandra-${CASS_VER}-bin.tar.gz
 install: cassandra chown
 
