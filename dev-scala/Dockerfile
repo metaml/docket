@@ -23,8 +23,10 @@ ADD zinc.mk /opt/mk/zinc.mk
 ADD zookeeper.mk /opt/mk/zookeeper.mk
 
 RUN for i in base.mk java.mk jq.mk kafka.mk maven.mk pkgs.mk sbt.mk scala.mk wget.mk zinc.mk zookeeper.mk; do \
-        echo $i; \
-        make -f /opt/mk/$i; \
+        if ! make -f /opt/mk/$i; then \
+           echo $i; \
+           exit 1; \
+        fi \
     done
 
 WORKDIR /
