@@ -8,9 +8,10 @@ RUN mkdir -p /data/zookeeper /log/kafka && chown -R daemon /data /log
 RUN chmod -R a+rwx /data /log
 
 WORKDIR /opt
-RUN mkdir -p mk
 
+RUN mkdir -p mk
 ADD base.mk /opt/mk/base.mk
+ADD cassandra.mk /opt/mk/cassandra.mk
 ADD java.mk /opt/mk/java.mk
 ADD jq.mk /opt/mk/jq.mk
 ADD kafka.mk /opt/mk/kafka.mk
@@ -22,7 +23,7 @@ ADD wget.mk /opt/mk/wget.mk
 ADD zinc.mk /opt/mk/zinc.mk
 ADD zookeeper.mk /opt/mk/zookeeper.mk
 
-RUN for i in base.mk java.mk jq.mk kafka.mk maven.mk pkgs.mk sbt.mk scala.mk wget.mk zinc.mk zookeeper.mk; do \
+RUN for i in base.mk cassandra.mk java.mk jq.mk kafka.mk maven.mk pkgs.mk sbt.mk scala.mk wget.mk zinc.mk zookeeper.mk; do \
         if ! make -f /opt/mk/$i; then \
            echo $i; \
            exit 1; \

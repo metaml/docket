@@ -1,13 +1,14 @@
-.PHONY: docker makefiles clean
+.PHONY: dev-scala makefiles clean
 
-docker: makefiles
-	docker build -t dev-scala .
+dev-scala: makefiles
+	docker build -t $@ .
 
 makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
 
 clean:; rm -f ${MAKEFILES}
 
 MAKEFILES = base.mk
+MAKEFILES += cassandra.mk
 MAKEFILES += java.mk
 MAKEFILES += jq.mk
 MAKEFILES += kafka.mk

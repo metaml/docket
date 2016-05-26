@@ -1,4 +1,4 @@
-FROM ubuntu:15.10
+FROM ubuntu:16.04
 MAINTAINER ml (metaml@gmail.com)
 
 RUN apt-get update -y && apt-get install -y make
