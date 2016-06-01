@@ -1,6 +1,6 @@
-.PHONY: cassandra makefiles clean
+.PHONY: cassandra-raw makefiles clean
 
-cassandra: makefiles
+cassandra-raw: makefiles
 	docker build --tag=$@ .
 
 MAKEFILES = base.mk java.mk python.mk cassandra.mk
