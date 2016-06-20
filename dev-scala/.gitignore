@@ -1,1 +1,1 @@
-base.mk cassandra.mk java.mk jq.mk kafka.mk maven.mk pkgs.mk sbt.mk scala.mk wget.mk zinc.mk zookeeper.mk
+*.mk
