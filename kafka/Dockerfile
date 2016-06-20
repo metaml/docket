@@ -1,4 +1,4 @@
-FROM ubuntu:15.10
+FROM ubuntu-java:latest
 MAINTAINER mlee (mlee@conductor.com)
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,12 +8,6 @@ RUN mkdir -p /data/zookeeper /log/kafka && chown -R daemon /data /log
 
 WORKDIR /opt
 RUN mkdir -p mk
-
-ADD base.mk /opt/mk/base.mk
-RUN make -f mk/base.mk
-
-ADD java.mk /opt/mk/java.mk
-RUN make -f mk/java.mk
 
 ADD kafka.mk /opt/mk/kafka.mk
 RUN make -f mk/kafka.mk

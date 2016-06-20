@@ -1,7 +1,7 @@
-FROM ubuntu:15.10
+FROM ubuntu-java:latest
 MAINTAINER mlee (mlee@conductor.com)
 
-ENV DEBIAN_FRONTEND noninteractive  
+ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -y && apt-get install -y make
 RUN mkdir -p /data /log && chown -R daemon /data /log
@@ -9,15 +9,10 @@ RUN mkdir -p /data /log && chown -R daemon /data /log
 WORKDIR /opt
 RUN mkdir -p mk
 
-ADD base.mk /opt/mk/base.mk
-RUN make -f mk/base.mk
-
-ADD java.mk /opt/mk/java.mk
-RUN make -f mk/java.mk
-
 ADD zookeeper.mk /opt/mk/zookeeper.mk
 RUN make -f mk/zookeeper.mk
 
+ADD myid /data/myid
 ADD zoo.cfg /opt/zookeeper/conf/zoo.cfg
 ADD start /opt/zookeeper/start
 
