@@ -3,7 +3,7 @@ MAINTAINER mlee (mlee@conductor.com)
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update -y && apt-get install -y make
+RUN apt-get update -y && apt-get install -y make aptitude
 RUN mkdir -p /data/zookeeper /log/kafka && chown -R daemon /data /log
 RUN chmod -R a+rwx /data /log
 
@@ -20,6 +20,7 @@ ADD scala.mk /opt/mk/scala.mk
 ADD wget.mk /opt/mk/wget.mk
 ADD zinc.mk /opt/mk/zinc.mk
 ADD zookeeper.mk /opt/mk/zookeeper.mk
+ADD docker.mk /opt/mk/docker.mk
 
 RUN for i in cassandra.mk jq.mk kafka.mk maven.mk pkgs.mk sbt.mk scala.mk wget.mk zinc.mk zookeeper.mk; do \
         if ! make -f /opt/mk/$i; then \

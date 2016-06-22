@@ -19,3 +19,4 @@ MAKEFILES += scala.mk
 MAKEFILES += wget.mk
 MAKEFILES += zinc.mk
 MAKEFILES += zookeeper.mk
+MAKEFILES += docker.mk
