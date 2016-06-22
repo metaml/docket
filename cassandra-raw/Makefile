@@ -11,6 +11,13 @@ cassandra-raw-3: makefiles
 		docker build --tag=cassandra-raw-$$i .; \
 	done
 
+cassandra-raw-dcos: makefiles
+	for i in 0 1 2; do \
+		sed "s/listen_address: cassandra-raw/listen_address: deck-cassandra-raw-$$i/g" cassandra-3.yaml \
+			> cassandra.yaml; \
+		docker build --tag=deck-cassandra-raw-$$i .; \
+	done
+
 MAKEFILES = base.mk java.mk python.mk cassandra.mk
 makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
 
