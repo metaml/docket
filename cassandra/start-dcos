@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# @todo: go generalize, use env vars
+seeds=$(dig +short deck-cassandra.marathon.mesos | xargs | sed 's/ /,/g')
+(cd /opt/cassandra/conf && sed "s/_SEEDS_/$seeds/g" < cassandra.tmpl > cassandra.yaml)
+
+cd /opt/cassandra && ./bin/cassandra -f -R

@@ -1,7 +1,7 @@
 FROM ubuntu-java:latest
 MAINTAINER ml (metaml@gmail.com)
 
-RUN apt-get update -y && apt-get install -y make
+RUN apt-get update -y && apt-get install -y make dnsutils
 
 USER root
 RUN mkdir -p /opt/mk
@@ -10,8 +10,8 @@ WORKDIR /opt/mk
 ADD cassandra.mk cassandra.mk
 RUN make -f cassandra.mk
 
-ADD cassandra.yaml /opt/cassandra/conf/cassandra.yaml
-ADD start /opt/cassandra/start
+ADD cassandra.tmpl /opt/cassandra/conf/cassandra.tmpl
+ADD start-dcos /opt/cassandra/start
 
 RUN mkdir -p /opt/cassandra/logs
 RUN chown -R daemon:daemon /opt/cassandra

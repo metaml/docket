@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ "SLAVE" = "$MODE" ]; then
+   exec /opt/spark/sbin/start-slave.sh
+else # "MASTER"
+   exec /opt/spark/sbin/start-master.sh
+fi

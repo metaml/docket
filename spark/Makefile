@@ -1,10 +1,12 @@
-.PHONY: docker cluster run debug makefiles clean
+.PHONY: spark clean
 
 spark: spark.mk
-	echo "@todo: implement"
-	#docker build -t spark .
+	docker build -t spark .
 
-spark.mk:
+spark.mk: ../mk/spark.mk
 	cp ../mk/spark.mk .
 
-clean:; rm -f ${MAKEFILES}
+../mk/spark.mk:
+	cp ../mk/spark.mk .
+
+clean:; rm -f spark.mk
