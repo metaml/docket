@@ -3,7 +3,7 @@
 ubuntu-java: makefiles
 	docker build --tag=$@ .
 
-MAKEFILES = base.mk java.mk python.mk
+MAKEFILES = base-16.04.mk java.mk python.mk
 makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
 
 clean:; rm -f ${MAKEFILES}

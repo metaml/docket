@@ -1,4 +1,4 @@
-FROM ubuntu:15.10
+FROM ubuntu:16.04
 MAINTAINER ml (metaml@gmail.com)
 
 RUN apt-get update -y && apt-get install -y make
@@ -6,8 +6,8 @@ RUN apt-get update -y && apt-get install -y make
 USER root
 WORKDIR /var/tmp
 
-ADD base.mk base.mk
-RUN make -f base.mk
+ADD base-16.04.mk base-16.04.mk
+RUN make -f base-16.04.mk
 
 ADD java.mk java.mk
 RUN make -f java.mk
