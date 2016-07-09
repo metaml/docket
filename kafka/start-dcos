@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# @todo: generalize using env vars
+c=$(dig +short deck-zookeeper.marathon.mesos | wc -l)
+while [ $c -lt 3 ]; do
+    sleep 1
+    c=$(dig +short deck-zookeeper.marathon.mesos | wc -l)
+done
+
+ZOOKEEPERS=$(dig +short deck-zookeeper.marathon.mesos | xargs | sed 's/ /,/g')
+(cd /opt/kafka/config && sed "s/_ZOOKEEPERS_/$ZOOKEEPERS:2181/g" server.tmpl > server.properties)
+
+exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties

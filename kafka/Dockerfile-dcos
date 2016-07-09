@@ -14,7 +14,7 @@ RUN make -f mk/kafka.mk
 
 ADD server.tmpl /opt/kafka/config/server.tmpl
 ADD zookeeper.properties /opt/kafka/config/zookeeper.properties
-ADD start /opt/kafka/start
+ADD start-dcos /opt/kafka/start
 
 RUN chown -R daemon /opt/kafka
 

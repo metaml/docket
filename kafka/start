@@ -1,2 +1,3 @@
-#!/bin/sh
+#!/bin/bash
+(cd /opt//opt/kafka/config && sed "s/_ZOOKEEPERS_/zookeeper:2181/g" server.tmpl > server.properties)
 exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
