@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# @todo: generalize using env vars
+
+c=$(dig +short deck-cassandra-raw.marathon.mesos | wc -l)
+while [ $c -lt 3 ]; do
+    sleep 1
+    c=$(dig +short deck-cassandra-raw.marathon.mesos | wc -l)
+done
+
+seeds=$(dig +short deck-cassandra-raw.marathon.mesos | xargs | sed 's/ /,/g')
+(cd /opt/cassandra/conf && sed "s/_SEEDS_/$seeds/g" cassandra.tmpl > cassandra.yaml)
+
+cd /opt/cassandra && ./bin/cassandra -f -R

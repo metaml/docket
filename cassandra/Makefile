@@ -1,24 +1,23 @@
 .PHONY: cassandra makefiles clean
 
-# fo dev
+# for dev: hostname "cassandra" is defined in the docker-compose.yaml file
 cassandra: makefiles
-	cp -f cassandra-1.yaml cassandra.yaml
+	sed "s/_SEEDS_/cassandra/g" cassandra.tmpl > cassandra.yaml
 	docker build --tag=$@ .
 
-# for dev
+# for dev: hostnames "cassandra-[0-2]" are defined in the docker-compose.yaml file
 cassandra-3: makefiles
-	sed "s/seeds: deck-cassandra-0.marathon.mesos,deck-cassandra-1.marathon.mesos,deck-cassandra-2.marathon.mesos/seeds: cassandra-0,cassandra-1,cassandra-2/g" cassandra-dcos.yaml > cassandra.yaml
+	sed 's/_SEEDS_/cassandra-0,cassandra-1,cassandra-2/g' cassandra.tmpl > cassandra.yaml
 	docker build --tag=$@ .
 
 cassandra-dcos: makefiles
-	cp -f cassandra-dcos.yaml cassandra.yaml
-	docker build --file=Dockerfile.dcos --tag=deck-cassandra .
+	docker build --file=Dockerfile-dcos --tag=deck-cassandra .
 
 cassandra-dcos-push:
 	docker tag deck-cassandra metaml/deck-cassandra
 	docker push metaml/deck-cassandra
 
-MAKEFILES = base.mk java.mk python.mk cassandra.mk
+MAKEFILES = cassandra.mk
 makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
 
-clean:; rm -f ${MAKEFILES}
+clean:; rm -f ${MAKEFILES} *.yaml *.mk

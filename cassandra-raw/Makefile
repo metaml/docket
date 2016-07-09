@@ -1,31 +1,22 @@
 .PHONY: cassandra-raw makefiles clean
 
 cassandra-raw: makefiles
-	cp -f cassandra-1.yaml cassandra.yaml
+	sed 's/_SEEDS_/cassandra-raw/g' cassandra.tmpl > cassandra.yaml
 	docker build --tag=$@ .
 
+cassandra-raw-3: SEEDS = cassandra-raw-0,cassandra-raw-1,cassandra-raw-2
 cassandra-raw-3: makefiles
-	for i in 0 1 2; do \
-		sed "s/listen_address: cassandra-raw/listen_address: cassandra-raw-$$i/g" cassandra-3.yaml \
-			> cassandra.yaml; \
-		docker build --tag=cassandra-raw-$$i .; \
-	done
+	sed "s/_SEEDS_/${SEEDS}/g" cassandra.tmpl > cassandra.yaml
+	docker build --tag=cassandra-raw .
 
 cassandra-raw-dcos: makefiles
-	for i in 0 1 2; do \
-		sed "s/seeds: \"cassandra-0,cassandra-1,cassandra-2\"/seeds: \"deck-cassandra-raw-0.marathon.mesos,deck-cassandra-raw-1.marathon.mesos,deck-cassandra-raw-2.marathon.mesos/g" cassandra-3.yaml > cassandra-t.yaml; \
-		sed "s/listen_address: cassandra/listen_address: deck-cassandra-raw-$$i.marathon.mesos/g" cassandra-t.yaml > cassandra.yaml; \
-		docker build --tag=deck-cassandra-raw-$$i .; \
-	done
+	docker build --file Dockerfile-dcos --tag=deck-cassandra-raw .
 
-MAKEFILES = base.mk java.mk python.mk cassandra.mk
+cassandra-raw-dcos-push:
+	docker tag deck-cassandra-raw metaml/deck-cassandra-raw
+	docker push metaml/deck-cassandra-raw
+
+MAKEFILES = cassandra.mk
 makefiles:; for i in ${MAKEFILES}; do cp ../mk/$$i .; done
 
-push:
-	for i in 0 1 2; do \
-		docker tag deck-cassandra-raw-$$i metaml/deck-cassandra-raw-$$i; \
-		docker push metaml/deck-cassandra-raw-$$i; \
-	done
-
-
-clean:; rm -f ${MAKEFILES}
+clean:; rm -f *.yaml *.mk
