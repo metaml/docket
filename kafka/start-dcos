@@ -7,7 +7,20 @@ while [ $c -lt 3 ]; do
     c=$(dig +short deck-zookeeper.marathon.mesos | wc -l)
 done
 
-ZOOKEEPERS=$(dig +short deck-zookeeper.marathon.mesos | xargs | sed 's/ /,/g')
-(cd /opt/kafka/config && sed "s/_ZOOKEEPERS_/$ZOOKEEPERS:2181/g" server.tmpl > server.properties)
+c=$(dig +short deck-kafka.marathon.mesos | wc -l)
+while [ $c -lt 3 ]; do
+    sleep 1
+    c=$(dig +short deck-kafka.marathon.mesos | wc -l)
+done
 
+pushd /opt/kafka/config
+broker_id=0
+for i in $(dig +short deck-kafka.marathon.mesos); do
+    broker_id=$(($broker_id+1))
+    sed "s/_BROKER_ID_/$broker_id/g" server.tmpl > server.tmpl2
+done
+ZOOKEEPERS=$(dig +short deck-zookeeper.marathon.mesos | xargs | sed 's/ /,/g')
+sed "s/_ZOOKEEPERS_/$ZOOKEEPERS:2181/g" server.tmpl2 > server.properties
+
+popd
 exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties

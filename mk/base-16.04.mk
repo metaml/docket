@@ -1,7 +1,16 @@
 SHELL = /bin/bash
 DEBIAN_FRONTEND = noninteractive
 
-PKGS = apt-utils syslinux-common software-properties-common python-software-properties make patch sudo wget curl unzip
+PKGS = apt-utils
+PKGS += syslinux-common
+PKGS += software-properties-common
+PKGS += python-software-properties
+PKGS += make
+PKGS += iputils-ping
+PKGS += dnsutils
+PKGS += wget
+PKGS += curl
+PKGS += unzip
 
 default: apt-update base clean apt-update
 
